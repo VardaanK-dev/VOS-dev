@@ -1,0 +1,26 @@
+name: Build Linux OS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up environment
+      run: sudo apt update && sudo apt install -y build-essential genisoimage
+
+    - name: Run build script
+      run: bash build.sh
+
+    - name: Upload built ISO (if created)
+      uses: actions/upload-artifact@v3
+      with:
+        name: linux-os-output
+        path: output/ # Change to the folder where your ISO or files are saved
